@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  db:
+    image: mariadb:10.7
+    container_name: db-glpi-local
+    hostname: db-glpi-local
+    ports:
+      - "8082:3306"
+    env_file:
+      - ./installations/environments/db.env
+    restart: always
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app-glpi-local
+    hostname: app-glpi-local
+    ports:
+      - "8080:80"
+      - "8081:443"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TIMEZONE=Europe/Istanbul
+    restart: always
